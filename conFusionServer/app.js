@@ -11,7 +11,17 @@ var dishRouter = require('./routes/DishRouter');
 var leaderRouter = require('./routes/LeaderRouter');
 var promotionRouter = require('./routes/PromotionRouter');
 
+//MONDO DB
+const mongoose = require('mongoose');
+const Dishes = require('./model/dishes');
+const url = 'mongodb://127.0.0.1:27017/conFusion'
+const connect = mongoose.connect(url);
 
+connect.then((db)=>{
+  console.log('CONNECTED TO SERVER SUCCESSFULL!!');
+},(err)=>{
+  console.log(err);
+});
 
 var app = express();
 
