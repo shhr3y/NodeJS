@@ -33,7 +33,40 @@ app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'public')));
+
+function auth(req,res,next){
+  console.log(req.headers);
+  var authHeader = req.headers.authorization;
+
+  if(!authHeader){
+    var err = new Error('You are not Authenticated!!');
+    res.setHeader('WWW-Authenticate','Basic');
+    err.status = 401;
+    next(err);
+    return; 
+  }
+
+  var auth = new Buffer.from(authHeader.split(' ')[1],'base64').toString().split(':');
+
+
+  var username = auth[0];
+  var password = auth[1];
+
+  if(username === 'admin' && password === 'password'){
+    next();
+  }else{
+    var err = new Error('Authentication not Accepted!!');
+    res.setHeader('WWW-Authenticate','Basic');
+    err.status = 401;
+    return next(err); 
+  }
+
+}
+
+app.use(auth);
+//at this point the app uses to fetch data from public folder so authentication will be applied before this usage.
+//so after this whichever app.use(middleware) is added will only be applicable to authenticated users. 
+app.use(express.static(path.join(__dirname, 'public'))); 
 
 
 // mounting all directories
