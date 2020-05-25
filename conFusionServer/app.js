@@ -13,6 +13,8 @@ var usersRouter = require('./routes/users');
 var dishRouter = require('./routes/DishRouter');
 var leaderRouter = require('./routes/LeaderRouter');
 var promotionRouter = require('./routes/PromotionRouter');
+var passport = require('passport');
+var authenticate = require('./authenticate');
 
 //MONDO DB
 const mongoose = require('mongoose');
@@ -45,27 +47,22 @@ app.use(session({
   store: new FileStore(),
 }));
 
+app.use(passport.initialize());
+app.use(passport.session());
+
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 
 
 function auth(req,res,next){
-  console.log(req.session);
   
-  if (!req.session.user) {
-      var err = new Error('You are not Authenticated!!');
-      err.status = 401;
+  if (!req.user) {
+      var err = new Error('YOU ARE NOT AUTHENTICATED!!');
+      err.status = 403;
       return next(err);
     }
   else{
-    if(req.session.user==='authenticated'){
-      next();
-    }
-    else{
-      var err = new Error('Authentication not Accepted!!');
-      err.status = 403;
-      return next(err); 
-    }
+    next();
   }
 }
 
