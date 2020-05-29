@@ -21,7 +21,7 @@ var config = require('./config');
 
 //MONDO DB
 const mongoose = require('mongoose');
-const Dishes = require('./model/dishes');
+const Dishes = require('./models/dishes');
 const url = config.mongoUrl;
 const connect = mongoose.connect(url);
 
