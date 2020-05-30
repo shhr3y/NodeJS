@@ -23,15 +23,24 @@ var config = require('./config');
 const mongoose = require('mongoose');
 const Dishes = require('./models/dishes');
 const url = config.mongoUrl;
-const connect = mongoose.connect(url);
-
+const connect = mongoose.connect(url,{useUnifiedTopology: true, useNewUrlParser: true });
 connect.then((db)=>{
-  console.log('CONNECTED TO SERVER SUCCESSFULL!!');
+  console.log('CONNECTION TO DATABASE SUCCESSFULL!!');
 },(err)=>{
-  console.log(err);
+  console.log('DB Connection Error:'+err);
 });
+mongoose.set('useCreateIndex', true);
 
 var app = express();
+app.all('*',(req,res,next)=>{
+  if(req.secure){
+    return next();
+  }
+  else{
+    res.redirect(307,'https://'+req.hostname+':'+app.get('secPort')+req.url)
+  }
+});
+
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
