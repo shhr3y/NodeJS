@@ -13,6 +13,7 @@ var usersRouter = require('./routes/users');
 var dishRouter = require('./routes/DishRouter');
 var leaderRouter = require('./routes/LeaderRouter');
 var promotionRouter = require('./routes/PromotionRouter');
+var uploadRouter = require('./routes/uploadRouter');
 var passport = require('passport');
 var authenticate = require('./authenticate');
 var config = require('./config');
@@ -25,7 +26,7 @@ const Dishes = require('./models/dishes');
 const url = config.mongoUrl;
 const connect = mongoose.connect(url,{useUnifiedTopology: true, useNewUrlParser: true });
 connect.then((db)=>{
-  console.log('CONNECTION TO DATABASE SUCCESSFULL!!');
+  console.log('CONNECTION TO DATABASE SUCCESSFULL!!\n\n');
 },(err)=>{
   console.log('DB Connection Error:'+err);
 });
@@ -64,6 +65,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/dishes',dishRouter);
 app.use('/promotions',promotionRouter);
 app.use('/leaders',leaderRouter);
+app.use('/imageUpload',uploadRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
