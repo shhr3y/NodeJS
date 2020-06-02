@@ -11,6 +11,7 @@ var FileStore = require('session-file-store')(session);
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var dishRouter = require('./routes/DishRouter');
+var commentsRouter = require('./routes/CommentRouter');
 var leaderRouter = require('./routes/LeaderRouter');
 var promotionRouter = require('./routes/PromotionRouter');
 var uploadRouter = require('./routes/uploadRouter');
@@ -68,6 +69,7 @@ app.use('/promotions',promotionRouter);
 app.use('/leaders',leaderRouter);
 app.use('/imageUpload',uploadRouter);
 app.use("/favorites", favoriteRouter);
+app.use("/comments", commentsRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
